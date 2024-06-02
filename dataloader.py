@@ -97,7 +97,7 @@ class ECG_Data(Dataset):
 if __name__=="__main__":
 
     #Najpierw lecisz z prepare_data, bo musisz mieć labelki dla superklas, wrzucasz link do CSV, możesz zostawić ten co jest bo to jest względna
-    final_data=prepare_dataset(".\\ptb-xl-a-large-publicly-available-electrocardiography-dataset-1.0.1\\ptbxl_database.csv")
+    final_data=prepare_dataset(".\\sample_dataset\\ptbxl_database.csv")
 
     #split zrobiłem sklearnem bo po co się męczyć
     ECG_train,ECG_test=train_test_split(final_data,test_size=0.2,random_state=42)
@@ -106,13 +106,20 @@ if __name__=="__main__":
     ECG_train=ECG_train.reset_index()
     ECG_test=ECG_test.reset_index()
     #tu ważne żeby podać ścieżkę do folderu z danymi, ale tylko folderu, bo potem to już się samo sklei
-    train_dataset=ECG_Data(ECG_train, ".\\ptb-xl-a-large-publicly-available-electrocardiography-dataset-1.0.1\\")
+    train_dataset=ECG_Data(ECG_train, ".\\sample_dataset\\")
     train_loader=torch.utils.data.DataLoader(train_dataset,batch_size=64)
-    test_dataset=ECG_Data(ECG_test, ".\\ptb-xl-a-large-publicly-available-electrocardiography-dataset-1.0.1\\")
+    test_dataset=ECG_Data(ECG_test, ".\\sample_dataset\\")
     test_loader=torch.utils.data.DataLoader(test_dataset,batch_size=64)
 
     print("Train data: ",len(train_dataset))
     print("Test data: ",len(test_dataset))
+
+    #print class distribution
+    print("Train class distribution: ")
+    print(ECG_train['labels'].value_counts())
+    print("Test class distribution: ")
+    print(ECG_test['labels'].value_counts())
+
     print("Printing train dataloader content: ")
 
     for data, label in train_loader:
