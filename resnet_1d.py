@@ -94,27 +94,17 @@ class SERes1d(nn.Module):
     x = self.maxpool(x)
 
     x = self.SE1_1(x)
-    print(x.shape)
     x = self.SE1_2(x)
-    print(x.shape)
 
     x = self.SE2_1(x)
-    print(x.shape)
     x = self.SE2_2(x)
-    print(x.shape)
     x = self.SE3_1(x)
-    print(x.shape)
     x = self.SE3_2(x)
-    print(x.shape)
 
     x = self.SE4_1(x)
-    print(x.shape)
     x = self.SE4_2(x)
-    print(x.shape)
     x = self.avgpool(x)
-    print(x.shape)
     x = torch.flatten(x,1)
-    print(x.shape)
     x = self.fc(x)
 
     return x

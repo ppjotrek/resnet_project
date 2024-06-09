@@ -89,6 +89,7 @@ class ECG_Data(Dataset):
         data_final=data_new[7]
         label=self.data['labels'][idx]
         data_final=torch.Tensor(data_final)
+        data_final = data_final[None,:]
         return data_final,label
 
 
