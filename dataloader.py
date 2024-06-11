@@ -69,11 +69,27 @@ def prepare_dataset(path:str):
     return final_data
 
 
+#TODO: Class to index map, żeby dało się zmapować dane na klasy, bo teraz to jest tylko w prepare_dataset
+
+
 class ECG_Data(Dataset):
 
-    def __init__(self, dataframe, path:str):
+    def __init__(self, dataframe, path:str, augmentation_probability:float=0.0, noise_probability:float=0.0, noise_level:float=0.0):
+
+        '''
+        Argumenty konstruktora:
+        dataframe: dataframe zawierający nazwy plików i ich labelki
+        path: ścieżka do folderu z danymi (do folderu datasetu, nie samego pliku dataset.csv)
+        augmentation_probability: prawdopodobieństwo, że dane zostaną poddane augmentacji (przez usunięcie losowych kanałów)
+        noise_probability: prawdopodobieństwo, że dane zostaną poddane dodaniu szumu
+        noise_level: poziom szumu, który zostanie dodany do danych
+        '''
+
         self.data = dataframe
         self.path = path
+        self.augmentation_probability = augmentation_probability
+        self.noise_probability = noise_probability
+        self.noise_level = noise_level
 
 
     def __len__(self):
@@ -86,10 +102,20 @@ class ECG_Data(Dataset):
         data=file_audio #zwraca 2 wartości, pierwsza to dane, druga to metadane, metadanych nie wykorzystujemy bo nie ma po co
         data_new=np.array(data[0])
         data_new=np.transpose(data_new,(1,0))
-        data_final=data_new[7]
+        data_final=data_new
+
+        if np.random.rand()<self.augmentation_probability:
+            num_of_channels_to_delete = np.random.randint(1,6)
+            for i in range(num_of_channels_to_delete):
+                channel_to_delete = np.random.randint(0,11)
+                data_final[channel_to_delete] = np.zeros(data_final[channel_to_delete].shape)
+        
+        if np.random.rand() < self.noise_probability:
+            noise = np.random.normal(0, self.noise_level, data_final.shape)
+            data_final += noise
+
         label=self.data['labels'][idx]
         data_final=torch.Tensor(data_final)
-        data_final = data_final[None,:]
         return data_final,label
 
 
@@ -124,6 +150,7 @@ if __name__=="__main__":
     print("Printing train dataloader content: ")
 
     for data, label in train_loader:
+        print(data.shape)
         print(data)
         print(label)
         break
