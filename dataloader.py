@@ -98,8 +98,8 @@ class ECG_Data(Dataset):
 
     def __getitem__(self,idx):
         path=self.path+self.data['filename_lr'][idx]
-        file_audio=wfdb.rdsamp(path) #czytanie plików danych, próbowałem inaczej ale jak jest do tego biblioteka to czemu nie. Raczej to jest standard przy EKG jak patrzyłem po kagglu
-        data=file_audio #zwraca 2 wartości, pierwsza to dane, druga to metadane, metadanych nie wykorzystujemy bo nie ma po co
+        file_audio=wfdb.rdsamp(path) 
+        data=file_audio
         data_new=np.array(data[0])
         data_new=np.transpose(data_new,(1,0))
         data_final=data_new
