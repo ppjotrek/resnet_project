@@ -105,7 +105,7 @@ class ECG_Data(Dataset):
         data_final=data_new
 
         if np.random.rand()<self.augmentation_probability:
-            num_of_channels_to_delete = np.random.randint(1,6)
+            num_of_channels_to_delete = np.random.randint(1,12)
             for i in range(num_of_channels_to_delete):
                 channel_to_delete = np.random.randint(0,11)
                 data_final[channel_to_delete] = np.zeros(data_final[channel_to_delete].shape)
