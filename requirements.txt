@@ -2,4 +2,3 @@ scikit-learn
 pandas
 numpy
 wfdb
-torch --index-url https://download.pytorch.org/whl/cu118

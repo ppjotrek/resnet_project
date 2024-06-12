@@ -1,4 +1,9 @@
 /prezentacje
-/.venv
+<<<<<<< HEAD
+/venv
 /ptb-xl-a-large-publicly-available-electrocardiography-dataset-1.0.1
+=======
+/.venv
+/ptb-xl-a-large-publicly-available-electrocardiography-dataset-1.0.3
+>>>>>>> 073f99d (aaaaaa)
 /__pycache__
