@@ -62,6 +62,7 @@ class SERes1d(nn.Module):
 
     self.SE1_1 = ResSeBasicBlock(64,64)
     self.SE1_2 = ResSeBasicBlock(64,64)
+    self.SE1_3 = ResSeBasicBlock(64,64)
     # downsample = None
     downsample = nn.Sequential(
         nn.Conv1d(64, 128, kernel_size=1, stride=2, bias=False),
@@ -70,6 +71,8 @@ class SERes1d(nn.Module):
 
     self.SE2_1 = ResSeBasicBlock(64,128,downsample=downsample,stride=2)
     self.SE2_2 = ResSeBasicBlock(128,128)
+    self.SE2_3 = ResSeBasicBlock(128,128)
+    self.SE2_4 = ResSeBasicBlock(128,128)
 
     downsample = nn.Sequential(
         nn.Conv1d(128, 256, kernel_size=1, stride=2, bias=False),
@@ -77,12 +80,17 @@ class SERes1d(nn.Module):
         )
     self.SE3_1 = ResSeBasicBlock(128,256,downsample=downsample,stride=2)
     self.SE3_2 = ResSeBasicBlock(256,256)
+    self.SE3_3 = ResSeBasicBlock(256,256)
+    self.SE3_4 = ResSeBasicBlock(256,256)
+    self.SE3_5 = ResSeBasicBlock(256,256)
+    self.SE3_6 = ResSeBasicBlock(256,256)
     downsample = nn.Sequential(
         nn.Conv1d(256, 512, kernel_size=1, stride=2, bias=False),
         nn.BatchNorm1d(512)
         )
     self.SE4_1 = ResSeBasicBlock(256,512,downsample=downsample,stride=2)
     self.SE4_2 = ResSeBasicBlock(512,512)
+    self.SE4_3 = ResSeBasicBlock(512,512)
 
     self.avgpool = nn.AdaptiveAvgPool1d(1)
     self.fc = nn.Linear(512, num_classes)
@@ -95,14 +103,24 @@ class SERes1d(nn.Module):
 
     x = self.SE1_1(x)
     x = self.SE1_2(x)
+    x = self.SE1_3(x)
 
     x = self.SE2_1(x)
     x = self.SE2_2(x)
+    x = self.SE2_3(x)
+    x = self.SE2_4(x)
+
     x = self.SE3_1(x)
     x = self.SE3_2(x)
+    x = self.SE3_3(x)
+    x = self.SE3_4(x)
+    x = self.SE3_5(x)
+    x = self.SE3_6(x)
 
     x = self.SE4_1(x)
     x = self.SE4_2(x)
+    x = self.SE4_3(x)
+
     x = self.avgpool(x)
     x = torch.flatten(x,1)
     x = self.fc(x)
