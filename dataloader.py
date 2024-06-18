@@ -115,6 +115,8 @@ class ECG_Data(Dataset):
             data_final += noise
 
         label=self.data['labels'][idx]
+        if label!= 0:
+            label = 1
         data_final=torch.Tensor(data_final)
         return data_final,label
 
